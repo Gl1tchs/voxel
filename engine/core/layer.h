@@ -1,0 +1,32 @@
+// Copyright (c) 2023 Berke Umut Biricik All Rights Reserved
+
+#pragma once
+
+#include <memory>
+
+#include "core/state.h"
+
+class Layer {
+ public:
+  Layer(std::shared_ptr<State> state);
+  virtual ~Layer() = default;
+
+ private:
+  virtual void OnStart() {}
+
+  virtual void OnDestroy() {}
+
+  virtual void OnUpdate(float ds) {}
+
+  virtual void OnGUI(float ds) {}
+
+ protected:
+  std::shared_ptr<State>& GetState() { return state_; }
+  const std::shared_ptr<State>& GetState() const { return state_; }
+
+ private:
+  std::shared_ptr<State> state_;
+
+  friend class Engine;
+  friend class LayerStack;
+};
