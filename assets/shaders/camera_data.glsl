@@ -1,3 +1,8 @@
+// Copyright (c) 2023 Berke Biricik
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 #ifndef CAMERA_DATA_GLSL_
 #define CAMERA_DATA_GLSL_
 

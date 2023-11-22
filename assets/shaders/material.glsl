@@ -1,3 +1,8 @@
+// Copyright (c) 2023 Berke Biricik
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 #ifndef MATERIAL_GLSL_
 #define MATERIAL_GLSL_
 

@@ -1,3 +1,8 @@
+// Copyright (c) 2023 Berke Biricik
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 #version 450
 
 #include "cube_output.glsl"

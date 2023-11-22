@@ -1,4 +1,7 @@
-// Copyright (c) 2023 Berke Umut Biricik All Rights Reserved
+// Copyright (c) 2023 Berke Biricik
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 
 #pragma once
 

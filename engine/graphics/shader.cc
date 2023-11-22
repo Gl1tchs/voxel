@@ -1,3 +1,8 @@
+// Copyright (c) 2023 Berke Biricik
+// 
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
 #include "graphics/shader.h"
 
 #include <fstream>
