@@ -8,40 +8,40 @@
 
 constexpr CubeVertex kCubeVertices[kCubeVertexCount] = {
     // Front face
-    {{-0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-    {{0.5f, -0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-    {{0.5f, 0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-    {{-0.5f, 0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+    {{-0.5f, -0.5f, 0.5f}, kVec3Forward},
+    {{0.5f, -0.5f, 0.5f}, kVec3Forward},
+    {{0.5f, 0.5f, 0.5f}, kVec3Forward},
+    {{-0.5f, 0.5f, 0.5f}, kVec3Forward},
 
     // Back face
-    {{0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}},
-    {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}},
-    {{-0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}},
-    {{0.5f, 0.5f, -0.5f}, {0.0f, 0.0f, -1.0f}},
+    {{0.5f, -0.5f, -0.5f}, kVec3Back},
+    {{-0.5f, -0.5f, -0.5f}, kVec3Back},
+    {{-0.5f, 0.5f, -0.5f}, kVec3Back},
+    {{0.5f, 0.5f, -0.5f}, kVec3Back},
 
     // Right face
-    {{0.5f, -0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, -0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, 0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, -0.5f, 0.5f}, kVec3Right},
+    {{0.5f, -0.5f, -0.5f}, kVec3Right},
+    {{0.5f, 0.5f, -0.5f}, kVec3Right},
+    {{0.5f, 0.5f, 0.5f}, kVec3Right},
 
     // Left face
-    {{-0.5f, -0.5f, -0.5f}, {-1.0f, 0.0f, 0.0f}},
-    {{-0.5f, -0.5f, 0.5f}, {-1.0f, 0.0f, 0.0f}},
-    {{-0.5f, 0.5f, 0.5f}, {-1.0f, 0.0f, 0.0f}},
-    {{-0.5f, 0.5f, -0.5f}, {-1.0f, 0.0f, 0.0f}},
+    {{-0.5f, -0.5f, -0.5f}, kVec3Left},
+    {{-0.5f, -0.5f, 0.5f}, kVec3Left},
+    {{-0.5f, 0.5f, 0.5f}, kVec3Left},
+    {{-0.5f, 0.5f, -0.5f}, kVec3Left},
 
     // Top face
-    {{-0.5f, 0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{0.5f, 0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{-0.5f, 0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
+    {{-0.5f, 0.5f, 0.5f}, kVec3Up},
+    {{0.5f, 0.5f, 0.5f}, kVec3Up},
+    {{0.5f, 0.5f, -0.5f}, kVec3Up},
+    {{-0.5f, 0.5f, -0.5f}, kVec3Up},
 
     // Bottom face
-    {{-0.5f, -0.5f, -0.5f}, {0.0f, -1.0f, 0.0f}},
-    {{0.5f, -0.5f, -0.5f}, {0.0f, -1.0f, 0.0f}},
-    {{0.5f, -0.5f, 0.5f}, {0.0f, -1.0f, 0.0f}},
-    {{-0.5f, -0.5f, 0.5f}, {0.0f, -1.0f, 0.0f}},
+    {{-0.5f, -0.5f, -0.5f}, kVec3Down},
+    {{0.5f, -0.5f, -0.5f}, kVec3Down},
+    {{0.5f, -0.5f, 0.5f}, kVec3Down},
+    {{-0.5f, -0.5f, 0.5f}, kVec3Down},
 };
 
 constexpr uint32_t kCubeIndices[kCubeIndexCount] = {
@@ -72,7 +72,10 @@ Renderer::Renderer() {
     cube_data_.instance_buffer = std::make_shared<VertexBuffer>(
         kMaxCubeInstanceCount * sizeof(CubeInstanceData));
     cube_data_.instance_buffer->SetLayout(
-        {{ShaderDataType::kFloat4, "a_color", false, 1},
+        {{ShaderDataType::kFloat3, "a_ambient", false, 1},
+         {ShaderDataType::kFloat3, "a_diffuse", false, 1},
+         {ShaderDataType::kFloat3, "a_specular", false, 1},
+         {ShaderDataType::kFloat, "a_shininess", false, 1},
          {ShaderDataType::kFloat3, "a_offset", false, 1}});
     cube_data_.vertex_array->AddVertexBuffer(cube_data_.instance_buffer);
 
@@ -125,7 +128,8 @@ void Renderer::DrawCube(const glm::vec3& position, const Material& material) {
     NextBatch();
   }
 
-  cube_data_.data.push_back({material.color, position});
+  cube_data_.data.push_back({material.ambient, material.diffuse,
+                             material.specular, material.shininess, position});
 
   stats_.instance_count++;
 }

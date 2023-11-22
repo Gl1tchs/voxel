@@ -26,6 +26,7 @@ constexpr size_t kCubeIndexCount = 36;
 struct CameraData final {
   glm::mat4 view;
   glm::mat4 proj;
+  glm::vec3 position;
 };
 
 struct RenderStats final {
@@ -41,13 +42,11 @@ struct CubeVertex final {
 };
 
 struct CubeInstanceData final {
-  glm::vec4 color;
+  glm::vec3 ambient;
+  glm::vec3 diffuse;
+  glm::vec3 specular;
+  float shininess;
   glm::vec3 offset;
-};
-
-struct LineVertex final {
-  glm::vec4 position;
-  glm::vec4 color;
 };
 
 template <typename InstanceDataType>
@@ -77,8 +76,6 @@ class Renderer final {
   void ResetStats();
 
  private:
-  bool NeedsNewBatch(uint32_t index_count, uint32_t old_count);
-
   void BeginBatch();
 
   void Flush();

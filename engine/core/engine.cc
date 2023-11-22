@@ -7,12 +7,12 @@
 
 Engine* Engine::engine_ = nullptr;
 
-Engine::Engine() {
+Engine::Engine(WindowProps window_props) {
   ASSERT(!engine_, "Only one Engine of engine can exists.")
   engine_ = this;
 
   state_ = std::make_shared<State>();
-  state_->window = std::make_shared<Window>();
+  state_->window = std::make_shared<Window>(window_props);
   state_->renderer = std::make_shared<Renderer>();
 
   SubscribeEvent<WindowCloseEvent>(

@@ -2,10 +2,28 @@
 
 #include "game_camera.h"
 
+#include "core/event/event_handler.h"
+#include "core/event/events.h"
 #include "core/event/input.h"
 
 GameCamera::GameCamera() {
   last_mouse_pos_ = Input::GetMousePosition();
+
+  if (Input::IsKeyReleased(KeyCode::kLeftShift)) {
+    speed_ /= 1.5f;
+  }
+
+  SubscribeEvent<KeyPressEvent>([this](const KeyPressEvent& event) {
+    if (event.GetKeyCode() == KeyCode::kLeftShift) {
+      SetSpeed(15.0f);
+    }
+  });
+
+  SubscribeEvent<KeyReleaseEvent>([this](const KeyReleaseEvent& event) {
+    if (event.GetKeyCode() == KeyCode::kLeftShift) {
+      SetSpeed(5.0f);
+    }
+  });
 }
 
 void GameCamera::Update(float ds) {

@@ -12,7 +12,7 @@
 
 class Engine {
  public:
-  Engine();
+  Engine(WindowProps window_props = WindowProps{});
   virtual ~Engine();
 
   void StartEventLoop();

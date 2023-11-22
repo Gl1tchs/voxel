@@ -32,8 +32,8 @@ void GameLayer::OnUpdate(float ds) {
 
   renderer->ResetStats();
 
-  renderer->BeginScene(
-      {camera_.GetViewMatrix(), camera_.GetProjectionMatrix()});
+  renderer->BeginScene({camera_.GetViewMatrix(), camera_.GetProjectionMatrix(),
+                        camera_.GetTransform().position});
 
   world_.Render();
 
@@ -68,8 +68,6 @@ void GameLayer::OnGUI(float ds) {
   ImGui::SeparatorText("Render Stats");
 
   ImGui::Text("Draw Calls: %d", stats.draw_calls);
-  ImGui::Text("Index Count: %d", stats.index_count);
-  ImGui::Text("Vertex Count: %d", stats.vertex_count);
   ImGui::Text("Instance Count: %d", stats.instance_count);
 
   ImGui::End();

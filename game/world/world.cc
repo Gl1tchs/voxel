@@ -5,11 +5,14 @@
 #include <cmath>
 
 constexpr size_t kSize = 128;
+constexpr size_t kMaxHeight = 16;
+
+static glm::vec4 CalculateColor(double darkness, glm::vec2 position);
 
 World::World(std::shared_ptr<Renderer> renderer)
     : renderer_(renderer), noise_data_(kSize * kSize) {
   FastNoiseLite noise;
-  noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+  noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
 
   int index = 0;
   for (int y = 0; y < kSize; y++) {
@@ -36,10 +39,24 @@ void World::Render() {
       float new_y = pos_y;
       float new_z = static_cast<float>(y) - offset.y;
 
+      glm::vec4 color = CalculateColor(
+          darkness, {static_cast<float>(x), static_cast<float>(y)});
+
       Material material;
-      material.color = glm::vec4(glm::vec3(darkness), 1.0f);
+      material.ambient = color;
+      material.diffuse = color;
+      material.specular = color;
+      material.shininess = 16.0;
 
       renderer_->DrawCube({new_x, new_y, new_z}, material);
     }
   }
+}
+
+glm::vec4 CalculateColor(double darkness, glm::vec2 position) {
+  float r = static_cast<float>(darkness) + position.x / kSize;
+  float g = 0.5f + position.y / kSize;
+  float b = 1.0f - static_cast<float>(darkness) - position.x / kSize;
+
+  return glm::vec4(r, g, b, 1.0);
 }

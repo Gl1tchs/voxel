@@ -9,7 +9,9 @@
 #include "graphics/texture.h"
 
 struct Material {
-  glm::vec4 color = glm::vec4(1.0f);
+  glm::vec3 ambient;
+  glm::vec3 diffuse;
+  glm::vec3 specular;
+  float shininess;
   std::shared_ptr<Texture> texture = nullptr;
-  // TODO ambient, diffusion etc.
 };

@@ -8,8 +8,6 @@
 
 #include <FastNoiseLite.h>
 
-constexpr size_t kMaxHeight = 32;
-
 class World {
  public:
   World(std::shared_ptr<Renderer> renderer);
